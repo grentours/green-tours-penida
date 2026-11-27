@@ -270,30 +270,9 @@ function packageCategoryBadge(data, packageKey = '') {
   return label ? `<strong class="package-category-label">${escapeHtml(label)}</strong>` : '';
 }
 
-const packageFaqs = [
-  ['What is included in the tour price?', 'Our packages include the services listed on each tour page, such as hotel pick-up and drop-off, fast boat tickets, private transportation, entrance tickets, lunch, and snorkeling equipment where applicable.'],
-  ['Do you provide hotel pick-up and drop-off in Bali?', 'Yes. Selected packages include private hotel pick-up and drop-off in Bali. Please provide your hotel name and location when booking.'],
-  ['Are there any hidden fees?', 'No. We believe in clear and transparent pricing. All inclusions are listed before you book, with no hidden fees.'],
-  ['What time does the trip start?', 'The start time depends on your selected tour and fast boat schedule. We will confirm the pick-up time with you before your trip.'],
-  ['How do I make a booking?', 'Click Book Your Trip, fill in your travel details, and submit the form. Your booking will be securely recorded, and our team will contact you to confirm your trip.'],
-  ['Can I customize my tour?', 'Yes. Some tours can be customized depending on your preferred destinations, activities, and available time. Contact us to discuss your itinerary.'],
-  ['What happens if the weather or sea conditions change?', 'Your safety comes first. If weather or sea conditions affect the tour, our team will discuss the available options with you and make the necessary adjustments.'],
-];
-const packagesOneToSixFaqs = [
-  ['Can I book a private trip?', 'Yes. Our Private snorkeling & Land tour is made for couples, families, and small groups who want the route and rhythm to be entirely their own.'],
-  ['Where does the trip start?', 'We pick you up from your hotel in Bali, take you to Nusa Penida for your tour, and bring you back to your hotel after the trip. Exact pick-up time is confirmed before your travel date.'],
-  ['What happens if the weather changes?', 'Your safety comes first. If sea conditions are not suitable, our crew will offer a route adjustment or a new date.'],
-  ['Do I need to be a strong swimmer?', 'Not at all. Life jackets and flotation aids are available, and our crew is always close by. Tell us your comfort level before we head out.'],
-  ['What is the cancellation policy?', 'Free cancellation is available up to 2 hours before your scheduled pick-up time.'],
-  ['Can I change my tour date?', 'Free rescheduling is available up to 2 hours before your scheduled pick-up time, subject to availability.'],
-];
-const packagePagesWithoutFaqs = new Set(['manta', 'matabay', 'mantaShared', 'matabayShared', 'westTrip09', 'eastTrip09']);
-function packageBottomContent(data, title, key) {
+function packageBottomContent(data, title) {
   const photos = galleryPhotosFor(data);
-  const packageNumber = Number(data.number);
-  const faqs = packageNumber >= 1 && packageNumber <= 6 ? [...packageFaqs, ...packagesOneToSixFaqs] : packageFaqs;
-  const faqSection = packagePagesWithoutFaqs.has(key) ? '' : `<section class="package-detail-faq"><div class="package-detail-section-heading"><p class="eyebrow">Your questions, answered</p><h2>What to know<br><i>before you go.</i></h2></div><div class="package-faq-list">${faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)} <span>+</span></summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>`;
-  return `<section class="package-detail-gallery"><div class="package-detail-section-heading"><p class="eyebrow">Our guest gallery</p><h2>Moments from<br><i>your day on the island.</i></h2></div><div class="package-bottom-gallery">${photos.map(photo => `<img loading="lazy" decoding="async" src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || title)}">`).join('')}</div></section>${faqSection}`;
+  return `<section class="package-detail-gallery"><div class="package-detail-section-heading"><p class="eyebrow">Our guest gallery</p><h2>Moments from<br><i>your day on the island.</i></h2></div><div class="package-bottom-gallery">${photos.map(photo => `<img loading="lazy" decoding="async" src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || title)}">`).join('')}</div></section>`;
 }
 function packageChoiceMarkup(config) {
   return `<div class="package-detail-page-inner vehicle-options-page ${escapeHtml(config.theme || '')}"><button class="package-back" type="button">← Back to all packages</button><header class="vehicle-options-heading"><p class="eyebrow">${escapeHtml(config.eyebrow)}</p><h1>${escapeHtml(config.heading)}</h1><p>${escapeHtml(config.description)}</p></header><div class="vehicle-options-grid">${config.choices.map((choice) => { const data = packages[choice.key]; const image = choice.image || data.heroImage; return `<article class="vehicle-option-card"><img src="${escapeHtml(image)}" alt="${escapeHtml(choice.alt || data.heroAlt || choice.title)}" loading="lazy"><div class="vehicle-option-shade"></div><div class="vehicle-option-copy"><span>${escapeHtml(choice.eyebrow)}</span><h2>${escapeHtml(choice.title)}</h2><p>${escapeHtml(choice.description || data.description || '')}</p><button class="vehicle-option-action" type="button" data-open-package="${escapeHtml(choice.key)}">${escapeHtml(choice.action)} <span aria-hidden="true">↗</span></button></div></article>`; }).join('')}</div></div>`;
